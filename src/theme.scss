@@ -1,0 +1,167 @@
+@use '@angular/material' as mat;
+
+.azure-theme { 
+  @include mat.theme((color: (primary: mat.$azure-palette, tertiary: mat.$orange-palette), typography: Helvetica, density: 0)); 
+}
+.azure-theme.dark {
+  @include mat.theme((color: (primary: mat.$azure-palette, tertiary: mat.$orange-palette), typography: Helvetica, density: 0, is-dark: true));
+}
+
+.chartreuse-theme { 
+  @include mat.theme((color: (primary: mat.$chartreuse-palette, tertiary: mat.$orange-palette), typography: Helvetica, density: 0)); 
+}
+.chartreuse-theme.dark {
+  @include mat.theme((color: (primary: mat.$chartreuse-palette, tertiary: mat.$orange-palette), typography: Helvetica, density: 0, is-dark: true)); 
+}
+
+.cyan-theme { 
+  @include mat.theme((color: (primary: mat.$cyan-palette, tertiary: mat.$orange-palette), typography: Helvetica, density: 0));
+}
+.cyan-theme.dark {
+  @include mat.theme((color: (primary: mat.$cyan-palette, tertiary: mat.$orange-palette), typography: Helvetica, density: 0, is-dark: true)); 
+}
+
+.magenta-theme { 
+  @include mat.theme((color: (primary: mat.$magenta-palette, tertiary: mat.$orange-palette), typography: Helvetica, density: 0)); 
+}
+.magenta-theme.dark { 
+  @include mat.theme((color: (primary: mat.$magenta-palette, tertiary: mat.$orange-palette), typography: Helvetica, density: 0, is-dark: true)); 
+}
+
+.spring-green-theme { 
+  @include mat.theme((color: (primary: mat.$spring-green-palette, tertiary: mat.$orange-palette), typography: Helvetica, density: 0)); 
+}
+.spring-green-theme.dark { 
+  @include mat.theme((color: (primary: mat.$spring-green-palette, tertiary: mat.$orange-palette), typography: Helvetica, density: 0, is-dark: true)); 
+}
+
+.green-theme { 
+  @include mat.theme((color: (primary: mat.$green-palette, tertiary: mat.$orange-palette), typography: Helvetica, density: 0)); 
+}
+.green-theme.dark { 
+  @include mat.theme((color: (primary: mat.$green-palette, tertiary: mat.$orange-palette), typography: Helvetica, density: 0, is-dark: true)); 
+}
+
+.violet-theme { 
+  @include mat.theme((color: (primary: mat.$violet-palette, tertiary: mat.$orange-palette), typography: Helvetica, density: 0)); 
+}
+.violet-theme.dark { 
+  @include mat.theme((color: (primary: mat.$violet-palette, tertiary: mat.$orange-palette), typography: Helvetica, density: 0, is-dark: true)); 
+}
+
+mat-toolbar {
+  height: 48px !important;
+}
+
+mat-card {
+  mat-card-header {
+    mat-card-title {
+      font-size: 18px !important;
+    }
+    mat-card-subtitle {
+      font-size: 14px !important;
+    }
+  }
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.mat-mdc-icon-button {
+  --mdc-icon-button-icon-color: inherit !important;
+  color: inherit !important;
+}
+
+.mat-mdc-icon-button .mat-icon {
+  color: inherit !important;
+}
+
+
+/* MAT-FORM-FIELD */
+
+mat-form-field {
+  width: 100%;
+}
+
+
+/* MAT-LIST */
+
+.mdc-list-item__secondary-text {
+  font-size: 12px !important;
+}
+
+
+
+/* SCROLL */
+
+.scroll-container {
+  scrollbar-width: thin;
+  scrollbar-color: var(--mat-sys-primary) transparent;
+}
+
+.scroll-container::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background: var(--mat-sys-primary);
+  border-radius: 20px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+  background: var(--mat-sys-primary-container);
+}
+
+
+
+/* MAT TABLE */
+
+.mat-mdc-table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  background-color: var(--mat-sys-surface-container-low) !important;
+}
+
+.mat-mdc-header-row {
+  height: 44px !important;
+  min-height: 44px !important;
+  width: 100% !important;
+}
+
+.mat-mdc-row {
+  width: 100% !important;
+  height: 50px !important;
+  min-height: 48px !important;
+  &:nth-child(even) {
+    background-color: var(--mat-sys-surface-container) !important;
+  }
+  &:hover {
+    background-color: rgba(var(--mat-sys-primary-rgb), 0.08) !important;
+  }
+}
+
+.mat-mdc-header-cell {
+  padding: 0 8px !important;
+}
+
+.mat-mdc-cell {
+  padding: 0 8px !important;
+  border: 1px solid var(--mat-sys-surface-container-highest) !important;
+}
+
+/* MAT-PAGINATOR */
+
+.mat-mdc-paginator {
+  height: 48px !important;
+}
+
+.mat-mdc-paginator-container {
+  height: 48px !important;
+  min-height: 48px !important;
+}
+
+.mat-mdc-paginator .mat-mdc-paginator-page-size-label {
+  display: none !important;
+}

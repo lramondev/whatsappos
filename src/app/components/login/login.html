@@ -1,0 +1,26 @@
+<div class="login">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Login</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form [formGroup]="form">
+        <mat-form-field appearance="fill">
+          <mat-label>Email</mat-label>
+          <input matInput type="email" formControlName="email" required>
+        </mat-form-field>
+
+        <mat-form-field appearance="fill">
+          <mat-label>Senha</mat-label>
+          <input matInput type="password" formControlName="password" required>
+        </mat-form-field>
+
+        <div class="options">
+          <mat-checkbox formControlName="remember">Lembrar-me</mat-checkbox>
+        </div>
+
+        <button matButton="filled" routerLink="/">Entrar</button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

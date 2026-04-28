@@ -1,0 +1,29 @@
+<div class="home">
+  <div class="content">
+
+      <mat-card>
+        <mat-card-header>
+          <mat-icon matCardAvatar>{{ module().icon }}</mat-icon>
+          <mat-card-title>{{ module().name }}</mat-card-title>
+          <mat-card-subtitle>v. {{ module().version }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+
+          <mat-grid-list cols="4" rowHeight="160px" gutterSize="16px">
+            @for(module of module().resources; track module.name) {
+              <mat-grid-tile>
+                <mat-card class="menu-card" [routerLink]="module.route">
+                  <mat-icon>{{ module.icon }}</mat-icon>
+                  <span>{{ module.name }}</span>
+                </mat-card>
+              </mat-grid-tile>
+            }
+          </mat-grid-list>
+
+        </mat-card-content>
+
+      </mat-card>
+
+
+  </div>
+</div>

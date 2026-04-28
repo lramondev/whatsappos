@@ -1,0 +1,74 @@
+<div class="app">
+  <div [ngClass]="{ 'closed': !app.settings.left_sidenav_opened }" class="sidenav">
+    <mat-toolbar matRipple>
+      <div class="logo" routerLink="">
+        @if (app.settings.left_sidenav_opened) {
+          <mat-icon>chat</mat-icon>
+          {{ app.name }}
+        } @else {
+          {{ 'wOS' }}
+        }
+      </div>
+    </mat-toolbar>
+    <div class="menu">
+
+      <mat-card matRipple routerLink="profile">
+        <mat-card-header>
+          <img mat-card-avatar src="https://material.angular.dev/assets/img/examples/shiba2.jpg" />
+          <mat-card-title>Shiba Inu</mat-card-title>
+          <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+        </mat-card-header>
+      </mat-card>
+
+      <mat-nav-list class="menu-nav">
+
+        @for(module of app.modules; track module.name) { 
+          @if(app.settings.left_sidenav_opened) {
+            <mat-list-item [ngClass]="{ 'closed': !app.settings.left_sidenav_opened }" [routerLink]="module.route" [activated]="false">
+              <mat-icon matListItemIcon>{{ module.icon }}</mat-icon>
+              <span matListItemTitle>{{ module.name }}</span>
+            </mat-list-item>
+          } @else {
+            <mat-list-item [ngClass]="{ 'closed': !app.settings.left_sidenav_opened }" [routerLink]="module.route" [activated]="false">
+              <mat-icon matListItemIcon>{{ module.icon }}</mat-icon>
+              <span matListItemTitle>{{ '' }}</span>
+            </mat-list-item>
+          }
+        }
+
+      </mat-nav-list>
+      
+      <mat-nav-list>
+        <mat-list-item (click)="logout()">
+          <mat-icon matListItemIcon>power_settings_new</mat-icon>
+          <span matListItemTitle>{{ app.settings.left_sidenav_opened ? 'Sair' : '' }}</span>
+        </mat-list-item>
+      </mat-nav-list>
+
+    </div>
+  </div>
+  <div class="content">
+    <mat-toolbar>
+      <button mat-icon-button (click)="toggleSidenav()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="spacer"></span>
+
+    </mat-toolbar>
+    <mat-progress-bar [mode]="isLoading() ? 'indeterminate' : 'determinate'" [value]="100"></mat-progress-bar>
+    <div class="outlet">
+      <router-outlet />
+    </div>
+  </div>
+  <div [ngClass]="{ 'closed': !app.settings.right_sidenav_opened }" 
+    class="sidenav">
+    <mat-toolbar>
+      <button mat-icon-button>
+        <mat-icon matListItemIcon>settings</mat-icon>
+      </button>
+    </mat-toolbar>
+    <div class="menu">
+
+    </div>
+  </div>
+</div>

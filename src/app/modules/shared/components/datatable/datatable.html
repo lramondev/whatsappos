@@ -1,0 +1,31 @@
+<div class="datatable">
+  <mat-toolbar>
+
+  </mat-toolbar>
+  <mat-progress-bar [mode]="isLoading() ? 'indeterminate' : 'determinate'" [value]="100"></mat-progress-bar>
+  <div class="table-container scroll-container">
+
+    <mat-table matSort [dataSource]="data()">
+
+      @for(column of columns(); track column.column_def) { 
+
+        <ng-container [matColumnDef]="column.column_def">
+
+          <mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="column.style">
+            {{ column.header }}
+          </mat-header-cell>
+
+          <mat-cell *matCellDef="let row" [ngStyle]="column.style">{{ row[column.column_def] }}</mat-cell>
+
+        </ng-container>
+
+      }
+
+      <mat-header-row *matHeaderRowDef="visibleColumns(); sticky: true;"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: visibleColumns();"></mat-row>
+      
+    </mat-table>
+
+  </div>
+  <mat-paginator [showFirstLastButtons]="true" [pageSizeOptions]="pageSizeOptions()" [length]="1000" [pageSize]="pageSize()"></mat-paginator>
+</div>

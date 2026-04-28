@@ -1,0 +1,12 @@
+.datatable {
+  height: 100%;
+  width: 100%;
+  padding: 8px;
+
+  .table-container {
+    height: calc(100% - 96px);
+    margin: 0;
+    overflow: hidden;
+    overflow-y: auto;
+  }
+}

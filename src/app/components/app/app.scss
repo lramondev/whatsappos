@@ -1,0 +1,100 @@
+.app {
+  display: flex; 
+  height: 100vh; 
+  width: 100vw;
+
+  .sidenav {
+    width: 292px;
+    overflow: hidden;
+    transition: width 0.4s;
+
+    &.closed {
+      width: 74px;
+    }
+
+    &:last-child {
+      .menu {
+        border-left: 1px solid rgb(from currentColor r g b / 0.2);
+      }
+    }
+
+    mat-toolbar {
+      height: 54px !important;
+      justify-content: center;
+      user-select: none;
+      cursor: pointer;
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: bold;
+
+        mat-icon {
+          height: 32px;
+          width: 32px;
+          font-size: 32px;
+        }
+      }
+    }
+
+    .menu {
+      height: 100%;
+      width: 100%;
+      padding: 0 6px;
+      border-right: 1px solid rgb(from currentColor r g b / 0.2);
+      overflow-y: auto;
+
+      mat-card {
+        height: 66px;
+        padding: 4px;
+        margin: 4px 0;
+
+        cursor: pointer;
+
+        mat-card-header {
+          padding: 4px 0;
+          img {
+            height: 50px;
+            width: 50px;
+          }
+          mat-card-title {
+            margin-top: 4px;
+          }
+        }
+      }
+
+      mat-nav-list {
+        padding: 0;
+        &.menu-nav {
+          height: calc(100% - 178px);
+        }
+
+        mat-list-item {
+          margin-bottom: 4px;
+          padding-left: 4px;
+          padding-right: 4px;
+          mat-icon {
+            height: 28px;
+            width: 28px;
+            margin: 0 12px;
+            font-size: 28px;
+          }
+        }
+      }
+    }
+  }
+
+  .content {
+    flex: 1; 
+    overflow: hidden;
+
+    mat-toolbar {
+      height: 54px !important;
+    }
+
+    .outlet {
+      height: calc(100% - 58px);
+      width: 100%;
+    }
+  }
+}

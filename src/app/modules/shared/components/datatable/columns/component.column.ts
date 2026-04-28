@@ -1,0 +1,23 @@
+export const ComponentColumn = (column_def: string,
+  header: string,
+  width = 300,
+  component: any,
+  inputs: Record<string, any> = {}) => ({
+  column_def,
+  header,
+  type: 'component',
+  data_type: 'object',
+  visible: true,
+  searchable: false,
+  sortable: true,
+  sticky: false,
+  sticky_end: false,
+  class: [],
+  style: { 'width': width, 'min-width': width, 'max-width': width },
+  mask: '',
+  prefix: '',
+  suffix: '',
+  color: '',
+  component,
+  inputs
+});
