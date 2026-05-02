@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, FormGroup, Validators } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatButtonModule } from '@angular/material/button';
-import { RouterLink } from "@angular/router";
+
+import { AuthService } from '../../services';
 
 @Component({
   selector: 'app-login',
@@ -15,22 +16,34 @@ import { RouterLink } from "@angular/router";
     MatFormFieldModule,
     MatInputModule,
     MatCheckboxModule,
-    MatButtonModule,
-    RouterLink
+    MatButtonModule
 ],
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
 export class Login {
 
-  form: FormGroup;
+  private _isLoading = signal(false);
+  readonly isLoading = this._isLoading.asReadonly();
 
-  constructor(private fb: FormBuilder) {
+  authService = inject(AuthService);
+  form: FormGroup;
+  
+  constructor(
+    private fb: FormBuilder
+  ) {
     this.form = this.fb.group({
       email: ['', [ Validators.required, Validators.email ]],
       password: ['', [ Validators.required, Validators.minLength(6) ]],
       remember: [ false ],
     });
+  }
+
+  login(): void {
+    this.authService.login({ 
+      email: this.form.controls['email'].value, 
+      password: this.form.controls['password'].value })
+      .subscribe();
   }
 
 }

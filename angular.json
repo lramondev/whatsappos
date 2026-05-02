@@ -68,6 +68,9 @@
               "buildTarget": "whatsappos:build:development"
             }
           },
+          "options": {
+    
+          },
           "defaultConfiguration": "development"
         },
         "test": {

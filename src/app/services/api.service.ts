@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 @Injectable({ providedIn: 'root' })
 export class ApiService {
 
-  private baseUrl = 'https://dev.whatsappos.local';
+  private baseUrl = 'https://dev.whatsappos.local/';
 
   constructor(private http: HttpClient) {}
 

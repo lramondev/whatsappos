@@ -14,9 +14,9 @@
 
       <mat-card matRipple routerLink="profile">
         <mat-card-header>
-          <img mat-card-avatar src="https://material.angular.dev/assets/img/examples/shiba2.jpg" />
-          <mat-card-title>Shiba Inu</mat-card-title>
-          <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+          <img mat-card-avatar [src]="user?.picture" />
+          <mat-card-title>{{ user?.email }}</mat-card-title>
+          <mat-card-subtitle>{{ user?.status?.name }}</mat-card-subtitle>
         </mat-card-header>
       </mat-card>
 

@@ -1,3 +1,53 @@
 <div class="profile">
-  <mat-slide-toggle [checked]="isDark()" (change)="toggle()"></mat-slide-toggle>
+  <div class="big">
+    <mat-card>
+
+    </mat-card>
+  </div>
+  <div class="medium">
+    <mat-card>
+      
+    </mat-card>
+  </div>
+  <div class="small">
+    <mat-card>
+      
+    </mat-card>
+  </div>
 </div>
+<!--
+<div class="profile">
+
+  <mat-card>
+    <form>
+      <mat-grid-list cols="2" rowHeight="56px">
+         <mat-grid-tile>
+            <mat-slide-toggle [checked]="isDark()" (change)="toggle()"></mat-slide-toggle>
+         </mat-grid-tile>
+        <mat-grid-tile>
+          <mat-form-field>
+            <mat-label>Tema</mat-label>
+            <mat-select [value]="theme" (selectionChange)="changeTheme($event.value)">
+
+              @for(theme of themes; track theme.name) { 
+
+                <mat-option [value]="theme.theme">
+                  {{ theme.name }}
+                </mat-option>
+
+              }
+
+            </mat-select>
+          </mat-form-field>
+        </mat-grid-tile>
+      </mat-grid-list>
+      
+
+     
+    </form>
+  </mat-card>
+
+
+</div>
+-->
+

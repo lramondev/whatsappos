@@ -3,6 +3,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Datatable as Dt } from '../../../../shared/components';
 
 import { COLUMNS } from './columns';
+import { ACTIONS } from './actions';
 
 @Component({
   selector: 'pessoa-empresa-datatable',
@@ -33,6 +34,7 @@ export class Datatable {
 
   ngOnInit(): void {
     this.datatable.setColumns(COLUMNS);
+    this.datatable.setActions(ACTIONS);
     this.datatable.setData(this.data);
   }
 }

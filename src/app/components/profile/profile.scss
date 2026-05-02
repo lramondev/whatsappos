@@ -1,5 +1,25 @@
 .profile {
-  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;          /* deve funcionar */
+  padding: 16px;
+  box-sizing: border-box;
+}
+
+.big { 
+  flex: 2 1 600px; 
+  height: 400px; 
+}
+.medium { 
+  flex: 1 1 400px; 
+  height: 400px; 
+}
+.small { 
+  flex: 1 1 300px; 
+  height: 200px; 
+}
+
+mat-card {
   width: 100%;
-  padding: 20px;
+  height: 100%;
 }

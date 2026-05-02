@@ -1,6 +1,10 @@
 <div class="datatable">
   <mat-toolbar>
 
+      @for(action of actions(); track action.name) { 
+        <button mat-icon-button><mat-icon>{{ action.icon }}</mat-icon></button>
+      }
+
   </mat-toolbar>
   <mat-progress-bar [mode]="isLoading() ? 'indeterminate' : 'determinate'" [value]="100"></mat-progress-bar>
   <div class="table-container scroll-container">

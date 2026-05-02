@@ -19,7 +19,7 @@
           <mat-checkbox formControlName="remember">Lembrar-me</mat-checkbox>
         </div>
 
-        <button matButton="filled" routerLink="/">Entrar</button>
+        <button matButton="filled" [disabled]="!form.valid || isLoading()" (click)="login()">Entrar</button>
       </form>
     </mat-card-content>
   </mat-card>

@@ -1,7 +1,7 @@
-import { Column as ColumnInterface } from "../../../../../interfaces";
+import { Column as ColumnInterface } from "../../../interfaces";
 import { IdColumn, EmptyColumn, StatusColumn, TextColumn, ComponentColumn } from "../columns";
 
-export class Column {
+export class CustomColumn {
 
   static id(): ColumnInterface {
     return IdColumn()

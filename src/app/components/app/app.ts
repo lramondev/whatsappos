@@ -9,8 +9,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatRippleModule } from '@angular/material/core';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 
-import { AppService } from '../../services';
+import { AppService, AuthService } from '../../services';
 import { App as AppInterface } from '../../interfaces';
+import { User as UserInterface } from '../../modules/system/user/interfaces';
 
 @Component({
   selector: 'app-root',
@@ -30,9 +31,12 @@ import { App as AppInterface } from '../../interfaces';
   styleUrl: './app.scss'
 })
 export class App {
+
   private appService = inject(AppService);
+  private authService = inject(AuthService);
 
   app: AppInterface = this.appService.app();
+  user: UserInterface | null  = this.authService.user();
 
   private _isLoading = signal(false);
   readonly isLoading = this._isLoading.asReadonly();

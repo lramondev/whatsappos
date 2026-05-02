@@ -1,0 +1,7 @@
+{
+  "/api": {
+    "target": "https://dev.whatsappos.local",
+    "secure": false,
+    "changeOrigin": true
+  }
+}

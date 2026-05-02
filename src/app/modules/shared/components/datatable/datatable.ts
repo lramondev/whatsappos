@@ -5,8 +5,10 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
-import { Column as ColumnInterface } from '../../../../interfaces';
+import { Column as ColumnInterface, Action as ActionInterface } from '../../interfaces';
 
 @Component({
   selector: 'datatable',
@@ -16,6 +18,8 @@ import { Column as ColumnInterface } from '../../../../interfaces';
     MatSortModule,
     MatPaginatorModule,
     MatProgressBarModule,
+    MatButtonModule,
+    MatIconModule,
     NgStyle
 ],
   templateUrl: './datatable.html',
@@ -34,6 +38,9 @@ export class Datatable {
 
   private _visibleColumns = signal<string[]>([]);
   readonly visibleColumns = this._visibleColumns.asReadonly();
+
+  private _actions = signal<ActionInterface[]>([]);
+  readonly actions = this._actions.asReadonly();
 
   private _data = signal<any[]>([]);
   readonly data = this._data.asReadonly();
@@ -57,6 +64,10 @@ export class Datatable {
     this._visibleColumns.set(columns
       .filter(f => f.visible)
       .map(m => m.column_def));
+  }
+
+  setActions(actions: ActionInterface[]) {
+    this._actions.set(actions);
   }
 
   setData(data: any[]): void {

@@ -10,11 +10,25 @@ export class ThemeService {
   private theme: string = '';
   private dark: boolean = false;
 
+  public themes = [
+    { name: 'Azure', theme: 'azure-theme' },
+    { name: 'Chartreuse', theme: 'chartreuse-theme' },
+    { name: 'Cyan', theme: 'cyan-theme' },
+    { name: 'Magenta', theme: 'magenta-theme' },
+    { name: 'Spring Green', theme: 'spring-green-theme' },
+    { name: 'Green', theme: 'green-theme' },
+    { name: 'Violet', theme: 'violet-theme' },
+  ];
+
   constructor(rendererFactory: RendererFactory2) {
     this.renderer = rendererFactory.createRenderer(null, null);
   }
 
   isDark = (): boolean => this.dark;
+
+  getTheme(): string {
+    return this.theme;
+  };
 
   toggle(): void {
     this.apply(this.theme, !this.dark);

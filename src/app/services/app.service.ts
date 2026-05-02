@@ -1,5 +1,6 @@
 import { Injectable, signal, inject, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 
 import * as services from '../services';
 import * as interfaces from '../interfaces';
@@ -30,21 +31,16 @@ export class AppService {
   readonly app = this._app.asReadonly();
 
   load(): Promise<interfaces.App> {
-    return new Promise((resolve, reject) => {
-      //let app = this.storageService.get('app') as interfaces.App;
-      //if(app) this.setApp(app);
+    return new Promise(async (resolve) => {
       this.isLoading.emit(true);
-      setTimeout(() => {
-        this.themeService.setTheme(this.app().settings.theme, this.app().settings.dark);
-        this.themeService.change.subscribe((theme: string, dark: boolean) => {
-          let app = this.app();
-          app.settings.theme = theme;
-          app.settings.dark = dark;
-          this.setApp(app);
+      this.themeService.setTheme(this.app().settings.theme, this.app().settings.dark);
+      return firstValueFrom(this.authService.load()).then(() => {
+          this.isLoading.emit(false);
+          resolve(this._app());
+        }).catch(() => {
+          this.isLoading.emit(false);
+          resolve(this._app());
         });
-        this.isLoading.emit(false);
-        resolve(this._app());
-      }, 1000);
     });
   }
 

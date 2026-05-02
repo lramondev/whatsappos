@@ -1,12 +1,12 @@
-import { Injectable } from '@angular/core';
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
 
-@Injectable()
-export class ApiInterceptor implements HttpInterceptor {
+import { StorageService } from '../services';
+import { Token } from '../modules/system/user/interfaces';
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    throw new Error('Method not implemented.');
-  }
-  
-}
+export const apiInterceptor: HttpInterceptorFn = (req, next) => {
+  const storageService = inject(StorageService);
+  const token = storageService.get('token') as Token;
+  req = req.clone({ setHeaders: { Authorization: `Bearer ${token?.plainTextToken}` } });
+  return next(req);
+};
