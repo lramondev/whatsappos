@@ -28,7 +28,7 @@ export class AuthService {
       return EMPTY;
     }
     
-    return this.apiService.get('api/auth/me').pipe(
+    return this.apiService.get('auth/me').pipe(
       tap((res: any) => {
         this._user.set(res.user);
         this.router.navigate(['/']);
@@ -41,7 +41,7 @@ export class AuthService {
   }
 
   login(credentials: any) {
-    return this.apiService.post('api/auth/login', credentials)
+    return this.apiService.post('auth/login', credentials)
       .pipe(tap((res: any) => {
         this.storageService.set('token', res.token);
         this._user.set(res.user);
@@ -50,7 +50,7 @@ export class AuthService {
   }
 
   register(name: string, email: string, password: string) {
-    return this.apiService.post('api/auth/register', { name, email, password });
+    return this.apiService.post('auth/register', { name, email, password });
   }
 
   logout(): void {

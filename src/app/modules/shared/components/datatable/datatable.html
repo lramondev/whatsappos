@@ -9,7 +9,7 @@
   <mat-progress-bar [mode]="isLoading() ? 'indeterminate' : 'determinate'" [value]="100"></mat-progress-bar>
   <div class="table-container scroll-container">
 
-    <mat-table matSort [dataSource]="data()">
+    <mat-table matSort [dataSource]="pageData()">
 
       @for(column of columns(); track column.column_def) { 
 
@@ -19,7 +19,11 @@
             {{ column.header }}
           </mat-header-cell>
 
-          <mat-cell *matCellDef="let row" [ngStyle]="column.style">{{ row[column.column_def] }}</mat-cell>
+          <mat-cell *matCellDef="let row" [ngStyle]="column.style">
+            {{ 
+              column.mask ? (row[column.column_def] | mask: column.mask) : row[column.column_def] 
+            }}
+          </mat-cell>
 
         </ng-container>
 
@@ -31,5 +35,11 @@
     </mat-table>
 
   </div>
-  <mat-paginator [showFirstLastButtons]="true" [pageSizeOptions]="pageSizeOptions()" [length]="1000" [pageSize]="pageSize()"></mat-paginator>
+  <mat-paginator 
+    [showFirstLastButtons]="true"
+    [length]="total()" 
+    [pageSize]="pageSize()" 
+    [pageSizeOptions]="[50, 100, 500, 1000]"
+    (page)="dataSource.onPageChange($event.pageIndex, $event.pageSize)">
+  </mat-paginator>
 </div>

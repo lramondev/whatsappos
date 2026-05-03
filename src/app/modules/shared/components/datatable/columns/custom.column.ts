@@ -10,9 +10,10 @@ export class CustomColumn {
   static text(
     column_def: string, 
     header: string, 
-    width = 300
+    width = 300,
+    align = 'left'
   ): ColumnInterface {
-    return TextColumn(column_def, header, width);
+    return TextColumn(column_def, header, width, align);
   }
   
   static status(): ColumnInterface {

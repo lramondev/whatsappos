@@ -15,6 +15,9 @@ export class AuthService {
   private _user = signal<User | null>(null);
   user = this._user.asReadonly();
 
+  private _remember = signal<boolean>(false);
+  remember = this._remember.asReadonly();
+
   private readonly INACTIVITY_TIMEOUT = 5 * 60 * 1000;
   private inactivityTimer?: number;
 
@@ -48,7 +51,7 @@ export class AuthService {
   }
 
   refreshToken() {
-    return this.apiService.post<{ token: Token }>('api/auth/refresh', {}).pipe(
+    return this.apiService.post<{ token: Token }>('auth/refresh', {}).pipe(
       tap(res => {
         this.storageService.set('token', res.token);
       }),
@@ -61,16 +64,19 @@ export class AuthService {
 
   load() {
     const token = this.storageService.get('token') as Token;
+    const remember = this.storageService.get('remember') as boolean;
+    this._remember.set(remember);
     if (!token?.plainTextToken) {
       this.router.navigate(['/login']);
       return EMPTY;
     }
 
-    return this.apiService.get('api/auth/me').pipe(
+    return this.apiService.get('auth/me').pipe(
       tap((res: any) => {
         this._user.set(res.user);
-        this.router.navigate(['/']);
         this.resetInactivityTimer();
+        if (this.router.url === '/login')
+          this.router.navigate(['/']);
       }),
       catchError(() => {
         this.logout();
@@ -79,13 +85,19 @@ export class AuthService {
     );
   }
 
-  login(credentials: any) {
-    return this.apiService.post('api/auth/login', credentials).pipe(
+  login(credentials: { email: string; password: string; remember: boolean }) {
+    return this.apiService.post('auth/login', {
+      email: credentials.email,
+      password: credentials.password
+    }).pipe(
       tap((res: any) => {
+        const remember = credentials.remember;
         this.storageService.set('token', res.token);
+        this.storageService.set('remember', remember);
+        this._remember.set(remember);
         this._user.set(res.user);
-        this.router.navigate(['/']);
         this.resetInactivityTimer();
+        this.router.navigate(['/']);
       })
     );
   }

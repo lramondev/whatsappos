@@ -4,6 +4,8 @@ import { provideRouter, withHashLocation } from '@angular/router';
 
 import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 
+import { provideNgxMask } from 'ngx-mask';
+
 import { AppService } from '../services';
 import { apiInterceptor } from '../interceptors';
 
@@ -21,5 +23,7 @@ export const appConfig: ApplicationConfig = {
       useValue: { fontSet: 'material-symbols-outlined' }
     },
     provideAppInitializer(() => inject(AppService).load()),
+
+    provideNgxMask()
   ]
 };

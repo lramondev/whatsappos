@@ -39,11 +39,17 @@ export class Login {
     });
   }
 
+  ngOnInit(): void {
+    this.form.controls['remember'].patchValue(this.authService.remember());
+  }
+
   login(): void {
-    this.authService.login({ 
-      email: this.form.controls['email'].value, 
-      password: this.form.controls['password'].value })
-      .subscribe();
+    this._isLoading.set(true);
+    this.authService.login(this.form.value)
+      .subscribe({
+      next: () => this._isLoading.set(false),
+      error: () => this._isLoading.set(false)
+    });
   }
 
 }

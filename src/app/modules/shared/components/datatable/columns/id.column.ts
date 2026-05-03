@@ -10,7 +10,7 @@ export const IdColumn = () => ({
   sticky: true,
   sticky_end: false,
   class: [],
-  style: { 'width': 100 + 'px', 'min-width': 100 + 'px', 'max-width': 100 + 'px' },
+  style: { 'text-align': 'center', 'justify-content': 'center', 'align-items': 'center', 'width': 100 + 'px', 'min-width': 100 + 'px', 'max-width': 100 + 'px' },
   mask: '',
   prefix: '',
   suffix: '',
