@@ -1,20 +1,20 @@
 .profile {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;          /* deve funcionar */
+  gap: 16px;
   padding: 16px;
   box-sizing: border-box;
 }
 
-.big { 
+.big {
   flex: 2 1 600px; 
-  height: 400px; 
+  height: 400px;
 }
-.medium { 
+.medium {
   flex: 1 1 400px; 
   height: 400px; 
 }
-.small { 
+.small {
   flex: 1 1 300px; 
   height: 200px; 
 }

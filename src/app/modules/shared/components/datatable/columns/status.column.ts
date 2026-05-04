@@ -10,7 +10,7 @@ export const StatusColumn = () => ({
   sticky: false,
   sticky_end: true,
   class: [],
-  style: { 'width': 80 + 'px', 'min-width': 80 + 'px', 'max-width': 80 + 'px' },
+  style: { 'text-align': 'center', 'justify-content': 'center', 'align-items': 'center', 'width': 100 + 'px', 'min-width': 100 + 'px', 'max-width': 100 + 'px' },
   mask: '',
   prefix: '',
   suffix: '',

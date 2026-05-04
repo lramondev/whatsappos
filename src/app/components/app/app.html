@@ -48,13 +48,6 @@
     </div>
   </div>
   <div class="content">
-    <mat-toolbar>
-      <button mat-icon-button (click)="toggleSidenav()">
-        <mat-icon>menu</mat-icon>
-      </button>
-      <span class="spacer"></span>
-
-    </mat-toolbar>
     <mat-progress-bar [mode]="isLoading() ? 'indeterminate' : 'determinate'" [value]="100"></mat-progress-bar>
     <div class="outlet">
       <router-outlet />

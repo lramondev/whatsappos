@@ -1,45 +1,99 @@
 <div class="datatable">
-  <mat-toolbar>
 
-      @for(action of actions(); track action.name) { 
-        <button mat-icon-button><mat-icon>{{ action.icon }}</mat-icon></button>
-      }
+  <mat-tab-group dynamicHeight mat-stretch-tabs="false" mat-align-tabs="start" animationDuration="0">
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon aria-hidden="false"
+         [matBadge]="total()"
+         [matBadgeHidden]="total() == 0">database</mat-icon>
+      </ng-template>
 
-  </mat-toolbar>
-  <mat-progress-bar [mode]="isLoading() ? 'indeterminate' : 'determinate'" [value]="100"></mat-progress-bar>
-  <div class="table-container scroll-container">
+      <div class="table-container scroll-container">
 
-    <mat-table matSort [dataSource]="pageData()">
+        <mat-table matSort [dataSource]="pageData()">
 
-      @for(column of columns(); track column.column_def) { 
+          @for(column of columns(); track column.column_def) { 
 
-        <ng-container [matColumnDef]="column.column_def">
+            <ng-container [matColumnDef]="column.column_def">
 
-          <mat-header-cell *matHeaderCellDef mat-sort-header [ngStyle]="column.style">
-            {{ column.header }}
-          </mat-header-cell>
+              
+              <mat-header-cell *matHeaderCellDef [ngStyle]="column.style">
+                <span>{{ column.header }}</span>
 
-          <mat-cell *matCellDef="let row" [ngStyle]="column.style">
-            {{ 
-              column.mask ? (row[column.column_def] | mask: column.mask) : row[column.column_def] 
-            }}
-          </mat-cell>
+                @if(column.searchable) {
+                  <button mat-icon-button><mat-icon>filter_alt</mat-icon></button>
+                }
 
-        </ng-container>
+              </mat-header-cell>
 
-      }
+              <mat-cell *matCellDef="let row" [ngStyle]="column.style">
+                {{ 
+                  column.mask ? (row[column.column_def] | mask: column.mask) : row[column.column_def] 
+                }}
+              </mat-cell>
 
-      <mat-header-row *matHeaderRowDef="visibleColumns(); sticky: true;"></mat-header-row>
-      <mat-row *matRowDef="let row; columns: visibleColumns();"></mat-row>
+            </ng-container>
+
+          }
+
+          <mat-header-row *matHeaderRowDef="visibleColumns(); sticky: true;"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: visibleColumns();" [class.selected]="isSelect(row)" (contextmenu)="onContextMenu($event, row)" (click)="desselect(row)" (dblclick)="toggleSelect(row)"></mat-row>
+          
+        </mat-table>
+
+        <div style="visibility: hidden; position: fixed;" 
+          [style.left]="contextMenuPosition.x"
+          [style.top]="contextMenuPosition.y" 
+          [matMenuTriggerFor]="menu"
+          #contextMenu="matMenuTrigger">
+        </div>
+
+        <mat-menu #menu="matMenu">
+         
+          @if(isSelectAll()) {
+
+            <button mat-menu-item (click)="clearAll()">
+              <mat-icon>check_box_outline_blank</mat-icon>
+              <span>Desmarcar todos</span>
+            </button>
+
+          } @else if(selectedData().length == 0) {
+    
+            <button mat-menu-item (click)="selectAll()">
+              <mat-icon>check_box</mat-icon>
+              <span>Selecionar todos</span>
+            </button>
+          }
       
-    </mat-table>
+        
+        </mat-menu>
 
-  </div>
-  <mat-paginator 
-    [showFirstLastButtons]="true"
-    [length]="total()" 
-    [pageSize]="pageSize()" 
-    [pageSizeOptions]="[50, 100, 500, 1000]"
-    (page)="dataSource.onPageChange($event.pageIndex, $event.pageSize)">
-  </mat-paginator>
+      </div>
+      <mat-paginator 
+        [showFirstLastButtons]="true"
+        [length]="total()" 
+        [pageSize]="pageSize()" 
+        [pageSizeOptions]="pageSizeOptons()"
+        (page)="onPageChange($event.pageIndex, $event.pageSize)">
+      </mat-paginator>
+
+    </mat-tab>
+
+    <mat-tab [disabled]="selectedData().length == 0">
+      <ng-template mat-tab-label>
+        <mat-icon aria-hidden="false"
+          [matBadge]="selectedData().length"
+          [matBadgeHidden]="selectedData().length == 0">{{ selectedData().length == 0 ? 'check_box_outline_blank' : ( selectedData().length != total() ? 'indeterminate_check_box' : 'check_box') }}</mat-icon>
+      </ng-template>
+    </mat-tab>
+
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <mat-icon aria-hidden="false"
+         [matBadge]="0"
+         [matBadgeHidden]="true">history</mat-icon>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+  
 </div>

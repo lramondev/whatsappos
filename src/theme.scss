@@ -138,7 +138,16 @@ mat-form-field {
     background-color: var(--mat-sys-surface-container) !important;
   }
   &:hover {
-    background-color: rgba(var(--mat-sys-primary-rgb), 0.08) !important;
+    opacity: .6;
+  }
+  &.selected {
+    background-color: var(--mat-sys-primary) !important;
+    color: var(--mat-button-label-text-color);
+    font-weight: bold;
+    &:hover {
+      background-color: var(--mat-sys-primary) !important;
+      opacity: .8;
+    }
   }
 }
 

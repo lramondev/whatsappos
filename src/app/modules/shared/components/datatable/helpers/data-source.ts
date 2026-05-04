@@ -1,7 +1,7 @@
-import { Injectable, signal, inject } from '@angular/core';
+import { signal, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 
-import { ApiService } from '../../../../../services';   // ajuste o caminho
+import { ApiService } from '../../../../../services';
 
 export interface PaginatedResponse {
   data: any[];
@@ -11,41 +11,44 @@ export interface PaginatedResponse {
   total: number;
 }
 
-@Injectable({ providedIn: 'root' })
 export class DataSource {
 
-  private apiService = inject(ApiService);
+  private _apiService = inject(ApiService);
 
   private _fullData = signal<any[]>([]);
-  private _pageData = signal<any[]>([]);
-  private _total = signal(0);
-  private _page = signal(1);
-  private _pageSize = signal(50);
-  private _loading = signal(false);
-  private _isRemote = signal(false);
-  private _endpoint = signal<string>('');
+  readonly fullData = this._fullData.asReadonly();
 
+  private _pageData = signal<any[]>([]);
   readonly pageData = this._pageData.asReadonly();
+
+  private _total = signal(0);
   readonly total = this._total.asReadonly();
+
+  private _page = signal(1);
   readonly page = this._page.asReadonly();
+
+  private _pageSize = signal(20);
   readonly pageSize = this._pageSize.asReadonly();
+
+  private _pageSizeOptons = signal([20, 100, 500, 1000]);
+  readonly pageSizeOptons = this._pageSizeOptons.asReadonly();
+
+  private _loading = signal(false);
   readonly loading = this._loading.asReadonly();
 
-  /** Configuração inicial */
-  setData(data: any[] = [], endpoint?: string, pageSize = 50) {
+  private _endpoint = signal<string>('');
+  readonly endpoint = this._endpoint.asReadonly();
+
+  setData(data: any[] = [], endpoint?: string, pageSize = 20) {
     this._pageSize.set(pageSize);
     this._page.set(1);
 
     if (data?.length > 0) {
-      // Modo Local
-      this._isRemote.set(false);
       this._endpoint.set('');
       this._fullData.set([...data]);
       this._total.set(data.length);
       this.updatePageData(1);
     } else if (endpoint) {
-      // Modo Laravel
-      this._isRemote.set(true);
       this._endpoint.set(endpoint);
       this.loadRemotePage(1, pageSize);
     }
@@ -62,7 +65,7 @@ export class DataSource {
     this._loading.set(true);
     try {
       const res = await firstValueFrom(
-        this.apiService.get<PaginatedResponse>(
+        this._apiService.get<PaginatedResponse>(
           `${this._endpoint()}?page=${page}&per_page=${pageSize}`
         )
       );
@@ -78,15 +81,13 @@ export class DataSource {
     }
   }
 
-  /** Chamado pelo mat-paginator */
   onPageChange(pageIndex: number, pageSize: number) {
     const newPage = pageIndex + 1;
     this._pageSize.set(pageSize);
 
-    if (this._isRemote()) {
+    if (this.endpoint())
       this.loadRemotePage(newPage, pageSize);
-    } else {
+    else 
       this.updatePageData(newPage);
-    }
   }
 }
