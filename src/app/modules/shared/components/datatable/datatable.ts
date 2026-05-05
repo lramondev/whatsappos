@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, ViewChild } from '@angular/core';
+import { Component, computed, ElementRef, EventEmitter, HostListener, inject, Output, signal, ViewChild } from '@angular/core';
 import { NgStyle, NgIf } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
@@ -18,7 +18,7 @@ import { NgxMaskPipe } from 'ngx-mask';
 
 import { ApiService } from '../../../../services';
 
-import { Column as ColumnInterface, Action as ActionInterface } from '../../interfaces';
+import { Column as ColumnInterface, Action as ActionInterface, Action } from '../../interfaces';
 
 export interface PaginatedResponse {
   data: any[];
@@ -42,6 +42,36 @@ export class Datatable {
 
   @ViewChild('contextMenu', { static: true }) 
   contextMenu!: MatMenuTrigger;
+
+  @Output()
+  onAction: EventEmitter<Action> = new EventEmitter();
+
+
+  @ViewChild('tableContainer', { static: false }) 
+  tableContainer!: ElementRef<HTMLDivElement>;
+
+  @HostListener('document:keydown', ['$event'])
+  onKeyDown(event: KeyboardEvent) {
+    if (!this.pageData().length || this.selectedData().length === 0) return;
+
+    const rows = this.pageData();
+    const currentIndex = rows.indexOf(this.selectedData()[0]);
+
+    if (event.key === 'ArrowDown') {
+      if (currentIndex < rows.length - 1) {
+        this.selectAndScroll(currentIndex + 1);
+      } else if (this.hasNextPage()) {
+        this.goToNextPage();
+      }
+    } 
+    else if (event.key === 'ArrowUp') {
+      if (currentIndex > 0) {
+        this.selectAndScroll(currentIndex - 1);
+      } else if (this.hasPrevPage()) {
+        this.goToPrevPage();
+      }
+    }
+  }
 
   private _apiService = inject(ApiService);
 
@@ -114,6 +144,94 @@ export class Datatable {
     }
   }
 
+  onContextMenu(event: MouseEvent, row: any) {
+    event.preventDefault();
+    this.contextMenuPosition.x = event.clientX + 'px';
+    this.contextMenuPosition.y = event.clientY + 'px';
+    this.contextMenu?.openMenu();
+  }
+
+  closeContextMenu() {
+    this.contextMenu.closeMenu();
+  }
+
+  // select
+  isSelect = (row: any): boolean => this._selectedData().includes(row);
+  isSelectAll = () => this.pageData().length > 0 && this.pageData().every(row => this.isSelect(row));
+  select = (row: any) => this._selectedData.set([...this._selectedData(), row]);
+  desselect = (row: any) => this._selectedData.set(this._selectedData().filter(r => r !== row))
+  
+  toggleSelect = (row: any) => this.isSelect(row) ? 
+    this._selectedData.set(this._selectedData().filter(r => r !== row)) : 
+    this._selectedData.set([...this._selectedData(), row]);
+
+  toggleAll = () => this.isSelectAll() ? this.clearAll() : this._selectedData.set([...this.pageData()]);
+  selectAll = () => this._selectedData.set([...this.pageData()]);
+  clearAll = () => this._selectedData.set([]);
+
+  // page
+  hasNextPage() { return this.page() < Math.ceil(this.total() / this.pageSize()); }
+  hasPrevPage() { return this.page() > 1; }
+
+  goToNextPage() {
+    this.onPageChange(this.page(), this.pageSize(), false); // false = primeira linha
+  }
+
+  goToPrevPage() {
+    this.onPageChange(this.page() - 2, this.pageSize(), true); // true = última linha
+  }
+
+  onPageChange(pageIndex: number, pageSize: number, goToLast: boolean = false) {
+    const newPage = pageIndex + 1;
+    this._pageSize.set(pageSize);
+
+    const loadPromise = this.endpoint() 
+      ? this.loadRemotePage(newPage, pageSize) 
+      : Promise.resolve(this.updatePageData(newPage));
+
+    loadPromise.then(() => {
+      if (this.pageData().length === 0) return;
+
+      const targetIndex = goToLast ? this.pageData().length - 1 : 0;
+      this._selectedData.set([this.pageData()[targetIndex]]);
+
+      setTimeout(() => {
+        const container = this.tableContainer.nativeElement;
+        
+        if (goToLast) {
+          container.scrollTo({ top: container.scrollHeight, behavior: 'instant' });
+        } else {
+          container.scrollTo({ top: 0, behavior: 'instant' });
+        }
+      }, 20);
+    });
+  }
+
+  private scrollToRow(index: number, toTop: boolean = false) {
+    const container = this.tableContainer.nativeElement;
+    const rows = container.querySelectorAll('mat-row');
+
+    if (toTop) {
+      container.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (index === rows.length - 1) {
+      // Última linha da página anterior → scroll para o final
+      container.scrollTo({ 
+        top: container.scrollHeight, 
+        //behavior: 'smooth' 
+      });
+    } else {
+      rows[index]?.scrollIntoView({ 
+        //behavior: 'smooth', 
+        block: 'nearest' 
+      });
+    }
+  }
+
+  private selectAndScroll(index: number) {
+    this._selectedData.set([this.pageData()[index]]);
+    setTimeout(() => this.scrollToRow(index), 10);
+  }
+      
   private updatePageData(page: number) {
     const start = (page - 1) * this._pageSize();
     const end = start + this._pageSize();
@@ -140,36 +258,4 @@ export class Datatable {
       this._loading.set(false);
     }
   }
-
-  onPageChange(pageIndex: number, pageSize: number) {
-    const newPage = pageIndex + 1;
-    this._pageSize.set(pageSize);
-
-    if (this.endpoint())
-      this.loadRemotePage(newPage, pageSize);
-    else 
-      this.updatePageData(newPage);
-  }
-
-
-  onContextMenu(event: MouseEvent, row: any) {
-    event.preventDefault();
-    this.contextMenuPosition.x = event.clientX + 'px';
-    this.contextMenuPosition.y = event.clientY + 'px';
-    this.contextMenu?.openMenu();
-  }
-
-  // select
-  isSelect = (row: any): boolean => this._selectedData().includes(row);
-  isSelectAll = () => this.pageData().length > 0 && this.pageData().every(row => this.isSelect(row));
-  select = (row: any) => this._selectedData.set([...this._selectedData(), row]);
-  desselect = (row: any) => this._selectedData.set(this._selectedData().filter(r => r !== row))
-  
-  toggleSelect = (row: any) => this.isSelect(row) ? 
-    this._selectedData.set(this._selectedData().filter(r => r !== row)) : 
-    this._selectedData.set([...this._selectedData(), row]);
-
-  toggleAll = () => this.isSelectAll() ? this.clearAll() : this._selectedData.set([...this.pageData()]);
-  selectAll = () => this._selectedData.set([...this.pageData()]);
-  clearAll = () => this._selectedData.set([]);
 }

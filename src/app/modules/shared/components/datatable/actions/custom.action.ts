@@ -3,6 +3,7 @@ export class CustomAction {
   static add() {
     return {
       name: 'add',
+      title: 'Adicionar',
       icon: 'add'
     }
   }
@@ -10,6 +11,7 @@ export class CustomAction {
   static edit() {
     return {
       name: 'edit',
+      title: 'Editar',
       icon: 'edit'
     }
   }
@@ -17,6 +19,7 @@ export class CustomAction {
   static delete() {
     return {
       name: 'delete',
+      title: 'Excluir',
       icon: 'delete'
     }
   }
@@ -24,6 +27,7 @@ export class CustomAction {
   static inactive() {
     return {
       name: 'inactive',
+      title: 'Desativar',
       icon: 'pause_circle'
     }
   }
@@ -31,6 +35,7 @@ export class CustomAction {
   static active() {
     return {
       name: 'inactive',
+      title: 'Ativar',
       icon: 'play_circle'
     }
   }
@@ -38,6 +43,7 @@ export class CustomAction {
   static cancel() {
     return {
       name: 'inactive',
+      title: 'Cancelar',
       icon: 'block'
     }
   }
@@ -45,6 +51,7 @@ export class CustomAction {
   static approve() {
     return {
       name: 'approve',
+      title: 'Aprovar',
       icon: 'check_circle'
     }
   }
@@ -52,6 +59,7 @@ export class CustomAction {
   static disapprove() {
     return {
       name: 'approve',
+      title: 'Desaprovar',
       icon: 'settings_backup_restore'
     }
   }
@@ -59,6 +67,7 @@ export class CustomAction {
   static close() {
    return {
       name: 'close',
+      title: 'Encerrar',
       icon: 'do_not_disturb_on'
     }
   }
@@ -66,6 +75,7 @@ export class CustomAction {
   static open() {
     return {
       name: 'open',
+      title: 'Abrir',
       icon: 'lock_open_circle'
     }
   }
@@ -73,19 +83,32 @@ export class CustomAction {
   static print() {
     return {
       name: 'print',
+      title: 'Imprimir',
       icon: 'print'
     }
   }
 
   static import() {
-
+    return {
+      name: 'print',
+      title: 'Importar',
+      icon: 'print'
+    }
   }
 
   static export() {
-
+    return {
+      name: 'print',
+      title: 'Exportar',
+      icon: 'print'
+    }
   }  
   
   static history() {
-
+    return {
+      name: 'history',
+      title: 'Histórico',
+      icon: 'history'
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, HostListener, inject, signal } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -31,6 +31,12 @@ import { User as UserInterface } from '../../modules/system/user/interfaces';
   styleUrl: './app.scss'
 })
 export class App {
+
+  @HostListener('document:contextmenu', ['$event'])
+  onContextMenu(event: MouseEvent) {
+    //event.preventDefault();
+    //event.stopImmediatePropagation();
+  }
 
   private appService = inject(AppService);
   private authService = inject(AuthService);
