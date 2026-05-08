@@ -55,6 +55,7 @@ mat-toolbar {
 
 mat-card {
   mat-card-header {
+    margin-bottom: 16px;
     mat-card-title {
       font-size: 18px !important;
     }
@@ -92,6 +93,17 @@ mat-form-field {
 }
 
 
+/* MAT-STEPPER */
+
+mat-stepper {
+  height: 72px !important;
+  .mat-horizontal-stepper-header-container {
+    margin-bottom: 8px;
+  }
+  .mat-horizontal-content-container {
+    padding: 8px !important;
+  }
+}
 
 /* SCROLL */
 
@@ -130,6 +142,7 @@ mat-form-field {
   width: 100% !important;
 }
 
+
 .mat-mdc-row {
   width: 100% !important;
   height: 50px !important;
@@ -153,6 +166,15 @@ mat-form-field {
 
 .mat-mdc-header-cell {
   padding: 0 8px !important;
+  span {
+    flex: 1;
+  }
+  button {
+    opacity: .4;
+    &:hover {
+      opacity: 1;
+    }
+  }
 }
 
 .mat-mdc-cell {

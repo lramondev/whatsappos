@@ -1,9 +1,11 @@
 import { Routes } from '@angular/router';
 
+import * as guards from  '../guards';
 import * as components from '../components';
 
 export const routes: Routes = [
   {
+    canActivate: [ guards.AuthGuard ],
     path: '', 
     component: components.App,
     children: [

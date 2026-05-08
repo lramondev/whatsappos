@@ -1,12 +1,18 @@
-import { Injectable } from '@angular/core';
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpInterceptorFn } from '@angular/common/http';
+import { inject } from '@angular/core';
+import { catchError, throwError } from 'rxjs';
 
-@Injectable()
-export class ErrorInterceptor implements HttpInterceptor {
+import { AuthService } from '../services';
 
-  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    throw new Error('Method not implemented.');
-  }
-  
-}
+export const errorInterceptor: HttpInterceptorFn = (req, next) => {
+  const authService = inject(AuthService);
+
+  return next(req).pipe(
+    catchError((error) => {
+      if (error.status === 401) {
+        authService.logout();
+      }
+      return throwError(() => error);
+    })
+  );
+};

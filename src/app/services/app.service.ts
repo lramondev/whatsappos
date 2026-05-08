@@ -57,6 +57,10 @@ export class AppService {
     return current;
   }
 
+  nav(url: string): void {
+    this.router.navigate([ '/' + url ])
+  }
+
   logout(): void {
     this.authService.logout();
   }

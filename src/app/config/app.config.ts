@@ -7,14 +7,14 @@ import { MAT_ICON_DEFAULT_OPTIONS } from '@angular/material/icon';
 import { provideNgxMask } from 'ngx-mask';
 
 import { AppService } from '../services';
-import { apiInterceptor } from '../interceptors';
+import { apiInterceptor, errorInterceptor } from '../interceptors';
 
 import { routes } from '../routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(
-      withInterceptors([ apiInterceptor ])
+      withInterceptors([ apiInterceptor, errorInterceptor ])
     ),
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes, withHashLocation()),

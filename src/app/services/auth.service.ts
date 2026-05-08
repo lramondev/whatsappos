@@ -18,6 +18,7 @@ export class AuthService {
   private _remember = signal<boolean>(false);
   remember = this._remember.asReadonly();
 
+  private refreshTimer?: number;
   private readonly INACTIVITY_TIMEOUT = 5 * 60 * 1000;
   private inactivityTimer?: number;
 
@@ -50,13 +51,28 @@ export class AuthService {
     }
   }
 
+  private clearTokenRefresh() {
+    if (this.refreshTimer) {
+      clearInterval(this.refreshTimer);
+      this.refreshTimer = undefined;
+    }
+  }
+
+  startTokenRefresh() {
+    this.clearTokenRefresh();
+    this.refreshTimer = setInterval(() => {
+      if (this.user()) {
+        this.refreshToken().subscribe();
+      }
+    }, 4 * 60 * 1000);
+  }
+
   refreshToken() {
     return this.apiService.post<{ token: Token }>('auth/refresh', {}).pipe(
       tap(res => {
         this.storageService.set('token', res.token);
       }),
       catchError(() => {
-        this.logout();
         return EMPTY;
       })
     );
@@ -75,11 +91,11 @@ export class AuthService {
       tap((res: any) => {
         this._user.set(res.user);
         this.resetInactivityTimer();
+        this.startTokenRefresh();
         if (this.router.url === '/login')
           this.router.navigate(['/']);
       }),
       catchError(() => {
-        this.logout();
         return EMPTY;
       })
     );
@@ -97,6 +113,7 @@ export class AuthService {
         this._remember.set(remember);
         this._user.set(res.user);
         this.resetInactivityTimer();
+        this.startTokenRefresh();
         this.router.navigate(['/']);
       })
     );

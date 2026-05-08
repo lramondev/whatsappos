@@ -1,1 +1,102 @@
-<p>form works!</p>
+<div class="form" (click)="closeContextMenu()">
+  <mat-card (contextmenu)="onContextMenu($event)">
+    <mat-card-header>
+      <mat-card-title>Empresa</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      
+
+      <mat-stepper [linear]="true" #stepper [animationDuration]="'0'">
+
+        <mat-step>
+          <ng-template matStepLabel>Detalhes</ng-template>
+
+          <!--
+            FAZER FORM-FIELD SER COMPONENT
+          -->
+
+          <form [formGroup]="formGroup">
+            <mat-grid-list cols="2" rowHeight="76px" gutterSize="16px">
+              <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                  <mat-label>CPF / CNPJ</mat-label>
+                  <input matInput formControlName="cpf_cnpj">
+                  <mat-icon matSuffix></mat-icon>
+                  <mat-hint>numérico</mat-hint>
+                </mat-form-field>
+              </mat-grid-tile>
+              <mat-grid-tile>
+                <mat-form-field appearance="fill">
+                  <mat-label>Nome / Razão Social</mat-label>
+                  <input matInput formControlName="nome_razao_social">
+                  <mat-icon matSuffix></mat-icon>
+                  <mat-hint>alfa</mat-hint>
+                </mat-form-field>
+              </mat-grid-tile>
+            </mat-grid-list>
+          </form>
+
+          <div class="step-buttons">
+            <button matButton matStepperNext>Próximo</button>
+          </div>
+
+        </mat-step>
+
+        <mat-step>
+          <ng-template matStepLabel>I.E.</ng-template>
+
+          <div class="step-buttons">
+            <button matButton matStepperPrevious>Voltar</button>
+            <button matButton matStepperNext>Próximo</button>
+          </div>
+        </mat-step>
+
+        <mat-step>
+          <ng-template matStepLabel>Endereço</ng-template>
+
+          <div class="step-buttons">
+            <button matButton matStepperPrevious>Voltar</button>
+            <button matButton matStepperNext>Próximo</button>
+          </div>
+        </mat-step>
+
+        <mat-step>
+          <ng-template matStepLabel>Contatos</ng-template>
+          <div class="step-buttons">
+            <button matButton matStepperPrevious>Voltar</button>
+            <button matButton matStepperNext>Próximo</button>
+          </div>
+        </mat-step>
+
+         <mat-step>
+          <ng-template matStepLabel>Certificado</ng-template>
+          <div class="step-buttons">
+            <button matButton matStepperPrevious>Voltar</button>
+            <button matButton>Concluir</button>
+          </div>
+        </mat-step>
+
+      </mat-stepper>
+
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button matButton>Cancelar</button>
+    </mat-card-actions>
+  </mat-card>
+
+  <div style="visibility: hidden; position: fixed;" 
+    [style.left]="contextMenuPosition.x"
+    [style.top]="contextMenuPosition.y" 
+    [matMenuTriggerFor]="menu"
+    #contextMenu="matMenuTrigger">
+  </div>
+
+  <mat-menu #menu="matMenu" [hasBackdrop]="false">
+    <button mat-menu-item>
+      <mat-icon>undo</mat-icon>
+      <span>Voltar</span>
+    </button>
+  </mat-menu>
+</div>

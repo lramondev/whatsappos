@@ -1,42 +1,25 @@
 .datatable {
+  display: flex;
+  flex-direction: column;
   height: 100%;
-  width: 100%;
-  padding: 8px;
-
-  mat-tab-group {
-    height: 100vh;
-  }
-
-  mat-toolbar {
-    button, mat-checkbox {
-      margin: 0 4px;
-    }
-  }
-
-  mat-header-cell {
-    span {
-      flex: 1;
-    }
-    button {
-      opacity: .4;
-      &:hover {
-        opacity: 1;
-      }
-    }
-  }
-
-  .table-container {
-    height: calc(100% - 60px);
-    overflow: hidden;
-    overflow-y: auto;
-    margin: 0;
-  }
+  padding: 16px;
+  box-sizing: border-box;
 }
 
-::ng-deep .mat-mdc-tab-body-wrapper {
-  height: 100% !important;
+mat-tab-group {
+  flex: 1;
+  min-height: 0;
 }
 
+::ng-deep .mat-mdc-tab-body-wrapper,
 ::ng-deep .mat-mdc-tab-body-content {
   height: 100% !important;
+  display: flex;
+  flex-direction: column;
+}
+
+.table-container {
+  flex: 1;
+  overflow-y: auto;
+  min-height: 0;
 }
