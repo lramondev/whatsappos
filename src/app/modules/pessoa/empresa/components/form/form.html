@@ -12,30 +12,51 @@
         <mat-step>
           <ng-template matStepLabel>Detalhes</ng-template>
 
-          <!--
-            FAZER FORM-FIELD SER COMPONENT
-          -->
+          <div class="step-content">
+            
+            <form [formGroup]="formGroup">
+              <mat-grid-list cols="2" rowHeight="76px" gutterSize="16px">
 
-          <form [formGroup]="formGroup">
-            <mat-grid-list cols="2" rowHeight="76px" gutterSize="16px">
-              <mat-grid-tile>
-                <mat-form-field appearance="fill">
-                  <mat-label>CPF / CNPJ</mat-label>
-                  <input matInput formControlName="cpf_cnpj">
-                  <mat-icon matSuffix></mat-icon>
-                  <mat-hint>numérico</mat-hint>
-                </mat-form-field>
-              </mat-grid-tile>
-              <mat-grid-tile>
-                <mat-form-field appearance="fill">
-                  <mat-label>Nome / Razão Social</mat-label>
-                  <input matInput formControlName="nome_razao_social">
-                  <mat-icon matSuffix></mat-icon>
-                  <mat-hint>alfa</mat-hint>
-                </mat-form-field>
-              </mat-grid-tile>
-            </mat-grid-list>
-          </form>
+                <mat-grid-tile>
+                  <app-cpf-cnpj-input [control]="formGroup.controls['cpf_cnpj']"></app-cpf-cnpj-input>
+                </mat-grid-tile>
+                
+                <mat-grid-tile>
+                  <mat-form-field appearance="fill">
+                    <mat-label>Nome / Razão Social</mat-label>
+                    <input matInput formControlName="nome_razao_social">
+                    <mat-icon matSuffix></mat-icon>
+                    <mat-hint>alfa</mat-hint>
+                  </mat-form-field>
+                </mat-grid-tile>
+
+              </mat-grid-list>
+            </form>
+
+            @if(!certificate) {
+              <button matButton (click)="fileInput.click()">
+                Importar Certificado A1 (.pfx)
+              </button>
+            }
+            
+            @if (certificate) {
+              <mat-card>
+
+                <mat-card-header>
+                  <mat-icon mat-card-avatar>license</mat-icon>
+                  <mat-card-title>Razão Social</mat-card-title>
+                  <mat-card-subtitle>{{ certificate.razao_social }}</mat-card-subtitle>
+                  <mat-card-subtitle>{{ certificate.cnpj | mask: '00.000.000/0000-00' }}</mat-card-subtitle>
+                  <span class="spacer"></span>
+                  <div>
+                    {{ certificate.validade_fim | date:'dd/MM/yyyy' }}
+                  </div>
+                </mat-card-header>
+          
+              </mat-card>
+            }
+          
+          </div>
 
           <div class="step-buttons">
             <button matButton matStepperNext>Próximo</button>
@@ -61,19 +82,11 @@
           </div>
         </mat-step>
 
-        <mat-step>
+         <mat-step>
           <ng-template matStepLabel>Contatos</ng-template>
           <div class="step-buttons">
             <button matButton matStepperPrevious>Voltar</button>
-            <button matButton matStepperNext>Próximo</button>
-          </div>
-        </mat-step>
-
-         <mat-step>
-          <ng-template matStepLabel>Certificado</ng-template>
-          <div class="step-buttons">
-            <button matButton matStepperPrevious>Voltar</button>
-            <button matButton>Concluir</button>
+            <button matButton [disabled]="!formGroup.valid" (click)="save()">Concluir</button>
           </div>
         </mat-step>
 
@@ -82,9 +95,11 @@
     </mat-card-content>
 
     <mat-card-actions align="end">
-      <button matButton>Cancelar</button>
+      <button matButton (click)="cancel()">Cancelar</button>
     </mat-card-actions>
   </mat-card>
+
+  <input type="file" #fileInput hidden accept=".crt,.key,.pem,.pfx,.p12" (change)="onFileSelected($event)">
 
   <div style="visibility: hidden; position: fixed;" 
     [style.left]="contextMenuPosition.x"
@@ -99,4 +114,5 @@
       <span>Voltar</span>
     </button>
   </mat-menu>
+  
 </div>

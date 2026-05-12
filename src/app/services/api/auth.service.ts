@@ -1,13 +1,18 @@
 import { Injectable, signal, inject, DestroyRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 import { catchError, EMPTY, tap, switchMap } from 'rxjs';
 
-import { ApiService, StorageService } from '../services';
-import { User, Token } from '../modules/system/user/interfaces';
+import { ApiService } from './api.service';
+import { StorageService } from '../utils';
+
+import { User, Token } from '../../modules/system/user/interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+
   private router = inject(Router);
+  private matDialog = inject(MatDialog);
   private apiService = inject(ApiService);
   private storageService = inject(StorageService);
   private destroyRef = inject(DestroyRef);
@@ -18,8 +23,9 @@ export class AuthService {
   private _remember = signal<boolean>(false);
   remember = this._remember.asReadonly();
 
-  private refreshTimer?: number;
-  private readonly INACTIVITY_TIMEOUT = 5 * 60 * 1000;
+  private readonly REFRESH_TIMEOUT = 9 * 60 * 1000;
+  private refreshTimer?: any;
+  private readonly INACTIVITY_TIMEOUT = 10 * 60 * 1000;
   private inactivityTimer?: number;
 
   constructor() {
@@ -64,7 +70,7 @@ export class AuthService {
       if (this.user()) {
         this.refreshToken().subscribe();
       }
-    }, 4 * 60 * 1000);
+    }, this.REFRESH_TIMEOUT);
   }
 
   refreshToken() {
@@ -120,6 +126,7 @@ export class AuthService {
   }
 
   logout(): void {
+    this.matDialog.closeAll();
     this.clearInactivityTimer();
     this.storageService.remove('token');
     this.storageService.remove('lastActivity');

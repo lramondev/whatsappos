@@ -7,6 +7,8 @@ import { ACTIONS } from './actions';
 import { Action } from '../../../../shared';
 
 import { AppService } from '../../../../../services';
+import { MatDialog } from '@angular/material/dialog';
+import { Form } from '../form/form';
 
 @Component({
   selector: 'pessoa-empresa-datatable',
@@ -23,10 +25,9 @@ export class Datatable {
   data: any[] = [];
 
   private appService = inject(AppService);
+  private matDialog = inject(MatDialog);
 
-  constructor() {
-
-  }
+  constructor() {}
 
   ngOnInit(): void {
     this.datatable.setConfig(COLUMNS, ACTIONS, this.data, 'pessoa/empresa');
@@ -38,6 +39,14 @@ export class Datatable {
   }
 
   add(action: Action): void {
+    /*const dialogRef = this.matDialog.open(Form, {
+      height: '580px',
+      width: '980px',
+      disableClose: true
+    });
+
+    dialogRef.componentInstance.onCancel.subscribe(() => dialogRef.close());
+    */
     this.appService.nav('pessoa/empresa/form');
   }
 
